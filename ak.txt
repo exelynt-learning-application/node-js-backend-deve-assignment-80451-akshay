@@ -1,0 +1,237 @@
+# Event Loop Analysis
+
+## 1. Introduction
+
+The **JavaScript Event Loop** is a mechanism that allows JavaScript to handle asynchronous operations even though JavaScript executes code using a single main thread.
+
+The Event Loop manages the execution of:
+
+- Synchronous code
+- Callback functions
+- Timers
+- Promises
+- Asynchronous operations
+
+---
+
+## 2. Example 1 – setTimeout
+
+### Code
+
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("Timeout");
+}, 0);
+
+console.log("End");
+```
+
+### Output
+
+```text
+Start
+End
+Timeout
+```
+
+### Explanation
+
+First, `"Start"` is printed because it is synchronous code.
+
+Then `setTimeout()` is registered. Even though the delay is `0`, its callback does not execute immediately. It is placed in the callback queue after the timer is ready.
+
+Next, `"End"` is printed.
+
+Finally, the Event Loop executes the `setTimeout()` callback.
+
+---
+
+## 3. Example 2 – Promise and setTimeout
+
+### Code
+
+```javascript
+console.log("Start");
+
+setTimeout(() => {
+    console.log("Timeout");
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log("Promise");
+});
+
+console.log("End");
+```
+
+### Output
+
+```text
+Start
+End
+Promise
+Timeout
+```
+
+### Explanation
+
+The synchronous statements execute first:
+
+```text
+Start
+End
+```
+
+The Promise callback goes into the **microtask queue**, while the `setTimeout()` callback goes into the **task/callback queue**.
+
+The Event Loop gives priority to microtasks.
+
+Therefore:
+
+```text
+Promise
+```
+
+is printed before:
+
+```text
+Timeout
+```
+
+---
+
+## 4. Example 3 – Nested setTimeout
+
+### Code
+
+```javascript
+console.log("A");
+
+setTimeout(() => {
+    console.log("B");
+
+    setTimeout(() => {
+        console.log("C");
+    }, 0);
+
+}, 0);
+
+console.log("D");
+```
+
+### Output
+
+```text
+A
+D
+B
+C
+```
+
+### Explanation
+
+`A` is synchronous, so it executes first.
+
+The first `setTimeout()` callback waits until the current synchronous code finishes.
+
+Therefore, `D` is printed next.
+
+Then the first timer executes and prints `B`.
+
+Inside that callback, another `setTimeout()` is created. That second callback must wait for another Event Loop cycle, so `C` is printed last.
+
+---
+
+## 5. Example 4 – Async/Await
+
+### Code
+
+```javascript
+console.log("Start");
+
+async function test() {
+    console.log("Inside");
+    await Promise.resolve();
+    console.log("After Await");
+}
+
+test();
+
+console.log("End");
+```
+
+### Output
+
+```text
+Start
+Inside
+End
+After Await
+```
+
+### Explanation
+
+`Start` is printed first.
+
+The `test()` function starts and prints `Inside`.
+
+When JavaScript reaches `await`, the remaining part of the function is paused and scheduled as a microtask.
+
+The main synchronous code continues, so `End` is printed.
+
+After the synchronous code finishes, the microtask runs and prints `After Await`.
+
+---
+
+## 6. Event Loop Execution Order
+
+A simplified execution flow is:
+
+```text
+          JavaScript Code
+                |
+                ↓
+        ┌───────────────┐
+        │ Call Stack    │
+        └───────┬───────┘
+                |
+                ↓
+       Asynchronous APIs
+                |
+        ┌───────┴────────┐
+        ↓                ↓
+   Microtask Queue   Task Queue
+   (Promises)        (Timers)
+        |                |
+        └───────┬────────┘
+                ↓
+           Event Loop
+                |
+                ↓
+          Call Stack
+```
+
+### General Priority
+
+After synchronous code finishes, JavaScript processes **microtasks** such as Promise callbacks before moving on to regular task/callback queue work such as `setTimeout()` callbacks.
+
+---
+
+## 7. Important Points
+
+1. JavaScript executes synchronous code first.
+2. `setTimeout(..., 0)` does not mean the callback executes immediately.
+3. Promise callbacks are placed in the microtask queue.
+4. Microtasks are processed before the next regular task.
+5. The Event Loop continuously checks whether the Call Stack is empty.
+6. This mechanism allows JavaScript to handle asynchronous operations efficiently.
+
+---
+
+## 8. Conclusion
+
+The Event Loop is an important part of JavaScript's asynchronous behavior. By understanding the **Call Stack, Web/Node.js APIs, Microtask Queue, Task Queue, and Event Loop**, we can correctly predict the execution order of asynchronous JavaScript code.
+
+This knowledge is especially useful when working with **Node.js, Promises, async/await, timers, and API calls**.
