@@ -1,0 +1,169 @@
+# Node.js Use Case Presentation
+
+## 1. Introduction
+
+Node.js is a JavaScript runtime environment that allows developers to run JavaScript outside the browser. It is built on Chrome's V8 JavaScript engine.
+
+Node.js is especially useful for applications that require fast processing, real-time communication, and handling many simultaneous requests.
+
+---
+
+## 2. Where Node.js Should Be Used
+
+### 1. Real-Time Applications
+
+Node.js is a good choice for applications that require real-time communication.
+
+**Examples:**
+- Chat applications
+- Online gaming
+- Live notifications
+- Collaboration tools
+
+**Example:** A chat application can use Node.js and WebSockets to send messages instantly between users.
+
+### 2. REST APIs
+
+Node.js is commonly used to create REST APIs and backend services.
+
+**Example:**
+
+```text
+Frontend → Node.js API → Database
+```
+
+A Node.js API can handle requests such as login, user registration, product details, and order management.
+
+### 3. Streaming Applications
+
+Node.js works well with data streams.
+
+**Examples:**
+- Video streaming
+- Audio streaming
+- File streaming
+
+It can process data in smaller chunks instead of loading the entire file into memory.
+
+### 4. Microservices
+
+Node.js is suitable for building lightweight microservices.
+
+For example:
+
+```text
+User Service
+     ↓
+Order Service
+     ↓
+Payment Service
+```
+
+Each service can be developed and deployed independently.
+
+### 5. Web Applications
+
+Node.js can be used as the backend for modern web applications.
+
+**Examples:**
+- E-commerce websites
+- Social media applications
+- Learning platforms
+- Business applications
+
+---
+
+## 3. Where Node.js Should NOT Be Used
+
+Node.js is not the best choice for every type of application.
+
+### 1. CPU-Intensive Applications
+
+Node.js uses a single main event loop, so heavy CPU calculations can block other requests.
+
+**Examples:**
+- Complex scientific calculations
+- Large mathematical computations
+- Heavy image processing
+- Intensive video processing
+
+For these applications, technologies designed for CPU-intensive workloads may be more suitable.
+
+### 2. Very Large Computational Tasks
+
+Applications that continuously perform complex calculations may not be ideal for a basic Node.js architecture.
+
+**Example:**
+
+```text
+Large Data Calculation
+        ↓
+Heavy CPU Processing
+        ↓
+Long Execution Time
+```
+
+Such workloads can affect the performance of other requests.
+
+### 3. Applications Requiring Heavy Machine Learning Processing
+
+Node.js can be used with machine-learning services and APIs, but it may not be the best primary environment for heavy ML model training.
+
+Python and specialized ML frameworks are commonly preferred for such workloads.
+
+---
+
+## 4. Advantages of Node.js
+
+- Fast execution
+- Asynchronous and non-blocking architecture
+- Good for real-time applications
+- Large npm package ecosystem
+- JavaScript can be used for both frontend and backend
+- Suitable for APIs and microservices
+- Handles many concurrent connections efficiently
+
+---
+
+## 5. Simple Use Case Example
+
+### Online Chat Application
+
+A chat application is a good use case for Node.js.
+
+```text
+User A
+   ↓
+Node.js Server
+   ↓
+WebSocket
+   ↓
+User B
+```
+
+When User A sends a message, the Node.js server can immediately send the message to User B.
+
+This makes Node.js suitable for real-time communication.
+
+---
+
+## 6. Node.js: Should vs Should Not
+
+| Should Use Node.js | Should Not Prefer Node.js |
+|---|---|
+| REST APIs | Heavy CPU calculations |
+| Chat applications | Large scientific computations |
+| Real-time applications | Intensive video processing |
+| Streaming applications | Heavy image processing |
+| Microservices | Large ML model training |
+| Web applications | Extremely computation-heavy workloads |
+
+---
+
+## 7. Conclusion
+
+Node.js is a powerful technology for building fast, scalable, and real-time applications. It is particularly suitable for **REST APIs, chat applications, streaming applications, microservices, and web applications**.
+
+However, Node.js may not be the best choice for applications involving **heavy CPU-intensive calculations or complex computational workloads**.
+
+Therefore, Node.js should be selected based on the application's requirements, performance needs, and type of workload.
