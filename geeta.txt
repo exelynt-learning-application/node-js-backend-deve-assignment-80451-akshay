@@ -143,7 +143,7 @@ User B
 
 When User A sends a message, the Node.js server can immediately send the message to User B.
 
-This makes Node.js suitable for real-time communication.
+This makes Node.js suitable for real-time communicatio
 
 ---
 
